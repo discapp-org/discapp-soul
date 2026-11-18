@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta property="og:title" content="Soul's Profile">
+    <meta property="og:description" content="Hey! Click to check out my new web profile!">
+    <meta property="og:url" content="https://soul.dedyn.io">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#b4c2be">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul // About</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0b0d;
+            --card-bg: #141518;
+            --container-bg: #101114;
+            
+            --accent-main: #b4c2be;   
+            --accent-dim: #5c6865;    
+            --accent-light: #e6efec;  
+            --accent-purple: #bd93f9;
+            --accent-green: #50fa7b;
+            --accent-cyan: #8be9fd;
+            
+            --border-color: #26292e;
+            --text-gray: #a0a5a4;
+            --text-white: #ffffff;
+
+            --brutal-shadow: 4px 4px 0px #000000;
+            --brutal-shadow-lg: 8px 8px 0px #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            background-image: url('https://cdn.discordapp.com/attachments/1537855883470446637/1538044518077567006/image.png?ex=6a813f14&is=6a7fed94&hm=e57cb151914cdfc37123bbf5e150ac9f01677eef16c6704197c6c3b6b25e781d&');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-wrapper {
+            position: relative;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: var(--brutal-shadow-lg);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            z-index: 1;
+        }
+
+        .card-wrapper.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            width: 100%;
+            background: rgba(24, 25, 28, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 3.2rem 4rem;
+            display: grid;
+            grid-template-columns: 1.1fr 1.2fr;
+            gap: 3.5rem;
+            position: relative;
+            z-index: 1; 
+        }
+
+        .profile-side {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 8px;
+            background: var(--card-bg);
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--brutal-shadow);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
+            color: var(--text-white);
+            text-transform: uppercase;
+        }
+
+        .status { 
+            font-family: JetBrains Mono, monospace; 
+            font-size: 0.8rem; 
+            font-weight: normal;
+            color: var(--accent-main); 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 1.5rem; 
+            background: #090a0c; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            border: 1px solid rgba(180, 194, 190, 0.2); 
+        }
+
+        .description {
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-side {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-white);
+            text-transform: uppercase;
+            white-space: nowrap;
+            letter-spacing: 1.5px;
+        }
+
+        .header-line {
+            flex-grow: 1;
+            height: 2px;
+            background: var(--border-color);
+        }
+
+        .btn-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .animated-btn {
+            position: relative;
+            background: var(--border-color);
+            padding: 2px;
+            border-radius: 8px;
+            text-decoration: none;
+            overflow: hidden;
+            display: block;
+            width: 100%;
+            box-shadow: var(--brutal-shadow);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .animated-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000000;
+        }
+
+        .animated-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        .animated-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0%,
+                var(--accent-purple) 20%,
+                transparent 40%,
+                transparent 50%,
+                var(--accent-purple) 70%,
+                transparent 90%,
+                transparent 100%
+            );
+            animation: btnRotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .animated-btn:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes btnRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-inner {
+            background: var(--card-bg);
+            padding: 14px 18px;
+            border-radius: 6px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-white);
+            font-weight: 600;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .animated-btn:hover .btn-inner {
+            background: #1c1e24;
+        }
+
+        .btn-inner span:last-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+            text-align: right;
+            padding-left: 10px;
+        }
+
+        .link-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--card-bg);
+            color: var(--accent-main);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            box-shadow: 2px 2px 0px #000000;
+            transition: transform 0.1s, box-shadow 0.1s, color 0.1s, background 0.1s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-purple);
+            background: #1c1e24;
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px #000000;
+        }
+
+        .footer-copyright {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem;
+            }
+
+            .profile-side,
+            .content-side {
+                align-items: stretch;
+            }
+
+            .profile-side {
+                align-items: center;
+                text-align: center;
+            }
+
+            .link-row {
+                justify-content: center;
+            }
+
+            .footer-copyright {
+                position: static;
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="card-wrapper" id="mainContainer">
+        <div class="container">
+            <div class="profile-side">
+                <div class="avatar">
+                    <img src="media/avatar.png" alt="avatar" style="width:100%; height:100%; object-fit: cover;">
+                </div>
+                <h1 id="soulTitle">Soul</h1>
+                <div class="status">OSS Lover &lt;3</div>
+
+                <p class="description">
+                    Hey, I'm Soul! I make cool web scripts, apps, Discord bots, and more! I also love to work with music and starting into sketches / art! If you want to chat or commission a project, feel free to reach out on my socials!
+                </p>
+                
+                <div class="link-row">
+                    <a href="https://github.com/SoulDevOfficial" class="nav-link">GitHub</a>
+                    <a href="https://discord.com/users/1254195552808206429" class="nav-link">Discord</a>
+                    <a href="mailto:developing.soulnet@gmail.com" class="nav-link">Email</a>
+                </div>
+            </div>
+
+            <div class="content-side">
+                <div>
+                    <div class="category-header">
+                        <span class="section-title">🗁 Learn More</span>
+                        <div class="header-line"></div>
+                    </div>
+                    <div class="btn-grid">
+                        <a href="portfolio" class="animated-btn">
+                            <div class="btn-inner">
+                                <span>Portfolio</span>
+                                <span>-&gt;</span>
+                            </div>
+                        </a>
+                        <a href="commissions" class="animated-btn">
+                            <div class="btn-inner">
+                                <span>Commissions</span>
+                                <span>-&gt;</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="category-header">
+                        <span class="section-title">🌐︎ Supported Projects</span>
+                        <div class="header-line"></div>
+                    </div>
+                    <div class="btn-grid">
+                        <a href="https://seedloaf.com" class="animated-btn">
+                            <div class="btn-inner">
+                                <span>Seedloaf Hosting</span>
+                                <span>04 / 2024</span>
+                            </div>
+                        </a>
+                        <a href="https://discapp.org" class="animated-btn">
+                            <div class="btn-inner">
+                                <span>Discapp.org</span>
+                                <span>09 / 2026</span>
+                            </div>
+                        </a>
+                        <a href="https://www.bump4you.com/" class="animated-btn">
+                            <div class="btn-inner">
+                                <span>Bump4You</span>
+                                <span>03 / 2023</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-copyright">
+        &copy; 2026 Soul. All Rights Reserved.
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('mainContainer');
+            setTimeout(() => {
+                container.classList.add('loaded');
+            }, 100);
+
+            const soulTitle = document.getElementById('soulTitle');
+            let brightness = 1;
+            setInterval(() => {
+                brightness = brightness === 1 ? 0.8 : 1;
+                soulTitle.style.transition = 'opacity 2s ease-in-out';
+                soulTitle.style.opacity = brightness;
+            }, 2000);
+
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const particleCount = 45;
+            const particles = [];
+            
+            const colors = [
+                'rgba(180, 194, 190, ',
+                'rgba(220, 163, 104, ',
+                'rgba(255, 255, 255, '
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height + Math.random() * 100;
+                    this.radius = Math.random() * 2 + 0.5;
+                    this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
+                    this.alpha = Math.random() * 0.5 + 0.1;
+                    this.speedY = Math.random() * 0.4 + 0.1;
+                    this.speedX = (Math.random() - 0.5) * 0.2;
+                    this.fadeSpeed = Math.random() * 0.003 + 0.001;
+                }
+
+                update() {
+                    this.y -= this.speedY;
+                    this.x += this.speedX;
+
+                    if (this.y < canvas.height * 0.8) {
+                        this.alpha -= this.fadeSpeed;
+                    }
+
+                    if (this.y < 0 || this.alpha <= 0) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.colorPrefix + this.alpha + ')';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = this.colorPrefix + '0.5)';
+                    ctx.fill();
+                    ctx.shadowBlur = 0; 
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                const p = new Particle();
+                p.y = Math.random() * canvas.height;
+                particles.push(p);
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    </script>
+</body>
+</html>
