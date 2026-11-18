@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta property="og:title" content="Soul's Profile">
+    <meta property="og:description" content="Hey! Click to check out my new web profile!">
+    <meta property="og:url" content="https://soul.dedyn.io">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#b4c2be">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul // 404</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@500;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0b0d;
+            --card-bg: #141518;
+            --container-bg: #101114;
+            
+            --accent-main: #b4c2be;   
+            --accent-dim: #5c6865;    
+            --accent-light: #e6efec;  
+            --accent-purple: #bd93f9;
+            --accent-red: #ff5555;
+            --accent-cyan: #8be9fd;
+            
+            --border-color: #26292e;
+            --text-gray: #a0a5a4;
+            --text-white: #ffffff;
+
+            --brutal-shadow: 4px 4px 0px #000000;
+            --brutal-shadow-lg: 8px 8px 0px #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            background-image: url('https://cdn.discordapp.com/attachments/1537855883470446637/1538044518077567006/image.png?ex=6a813f14&is=6a7fed94&hm=e57cb151914cdfc37123bbf5e150ac9f01677eef16c6704197c6c3b6b25e781d&');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text-white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-wrapper {
+            position: relative;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: var(--brutal-shadow-lg);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            z-index: 1;
+        }
+
+        .card-wrapper.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            width: 100%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-code {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 4.8rem;
+            line-height: 1;
+            color: var(--accent-red);
+            user-select: none;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+            image-rendering: pixelated;
+            
+            text-shadow: 
+                3px 3px 0px #800000,
+                6px 6px 0px #400000,
+                9px 9px 0px #000000,
+                12px 12px 0px rgba(0,0,0,0.8);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-white);
+            text-transform: uppercase;
+        }
+
+        .terminal-bar {
+            width: 100%;
+            background: #090a0c;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        .terminal-bar .err { color: var(--accent-red); font-weight: bold; }
+        .terminal-bar .path { color: var(--accent-cyan); }
+        .terminal-bar .msg { color: var(--text-gray); margin-left: 6px; }
+
+        .main-text {
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-size: 1rem;
+            max-width: 480px;
+        }
+
+        .nav-link-top {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--text-white);
+            background: var(--card-bg);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: var(--brutal-shadow);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, color 0.1s ease, background 0.1s ease;
+            margin-top: 0.5rem;
+        }
+
+        .nav-link-top:hover {
+            color: var(--accent-purple);
+            background: #1c1e24;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000000;
+        }
+
+        .nav-link-top:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        .outer-copyright {
+            margin-top: 2rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 2rem 1.5rem; }
+            .error-code { font-size: 3.2rem; }
+            h1 { font-size: 1.8rem; }
+            .card-wrapper {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="card-wrapper" id="mainContainer">
+        <div class="container">
+            <div class="error-code">404</div>
+
+            <div class="terminal-bar">
+                <span class="err">ERR_NOT_FOUND</span>:<span class="path">/portfolio</span><span class="msg">-- status: 404</span>
+            </div>
+
+            <div class="main-text">
+                <p>
+                    Looks like I temporarily disabled this page or it's no longer available!
+                </p>
+            </div>
+
+            <a href="https://soul.dedyn.io" class="nav-link-top">← Back to Profile</a>
+        </div>
+    </div>
+
+    <div class="outer-copyright">
+        &copy; 2026 Soul. All Rights Reserved.
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('mainContainer');
+            setTimeout(() => {
+                container.classList.add('loaded');
+            }, 100);
+
+            const soulTitle = document.getElementById('soulTitle');
+            if (soulTitle) {
+                let brightness = 1;
+                setInterval(() => {
+                    brightness = brightness === 1 ? 0.8 : 1;
+                    soulTitle.style.transition = 'opacity 2s ease-in-out';
+                    soulTitle.style.opacity = brightness;
+                }, 2000);
+            }
+
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const particleCount = 45;
+            const particles = [];
+            
+            const colors = [
+                'rgba(180, 194, 190, ',
+                'rgba(220, 163, 104, ', 
+                'rgba(255, 255, 255, ' 
+            ];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height + Math.random() * 100;
+                    this.radius = Math.random() * 2 + 0.5;
+                    this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
+                    this.alpha = Math.random() * 0.5 + 0.1;
+                    this.speedY = Math.random() * 0.4 + 0.1;
+                    this.speedX = (Math.random() - 0.5) * 0.2;
+                    this.fadeSpeed = Math.random() * 0.003 + 0.001;
+                }
+
+                update() {
+                    this.y -= this.speedY;
+                    this.x += this.speedX;
+
+                    if (this.y < canvas.height * 0.8) {
+                        this.alpha -= this.fadeSpeed;
+                    }
+
+                    if (this.y < 0 || this.alpha <= 0) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.colorPrefix + this.alpha + ')';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = this.colorPrefix + '0.5)';
+                    ctx.fill();
+                    ctx.shadowBlur = 0; 
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                const p = new Particle();
+                p.y = Math.random() * canvas.height;
+                particles.push(p);
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    </script>
+</body>
+</html>
